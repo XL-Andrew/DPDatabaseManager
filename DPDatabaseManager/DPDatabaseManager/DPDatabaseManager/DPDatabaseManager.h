@@ -16,7 +16,7 @@
 
 /* 创建表或插入数据
  *
- * @param  model所需存储的Model数据
+ * @param  model    所需存储的Model数据
  * @param  fileName 表名
  *
  * @return 是否创建或插入成功
@@ -25,7 +25,7 @@
 
 /* 获取表中最后一条数据
  *
- * @param  kclass Model类
+ * @param  kclass   Model类
  * @param  fileName 表名
  *
  * @return Model类

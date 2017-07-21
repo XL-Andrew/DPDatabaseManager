@@ -8,12 +8,32 @@
 
 #import <Foundation/Foundation.h>
 
-@interface DemoModel : NSObject <NSCoding>
+@interface DemoModel : NSObject
 
-@property (nonatomic, copy) NSString *userName;
+@property (nonatomic, copy) NSString *string;
 
-@property (nonatomic, assign) NSUInteger userAge;
+@property (nonatomic, assign) NSInteger integer;
 
-@property (nonatomic, assign) BOOL isAdult;
+@property (nonatomic, assign) NSUInteger uinteger;
+
+@property (nonatomic, assign) BOOL kBool;
+
+@property (nonatomic, assign) char kchar;
+
+@property (nonatomic, assign) float kfloat;
+
+@property (nonatomic, assign) double kdouble;
+
+@property (nonatomic, assign) int kint;
+
+@property (nonatomic, assign) id kid;
+
+@property (nonatomic, retain) NSArray *array;
+
+@property (nonatomic, retain) NSMutableArray *mutableArray;
+
+@property (nonatomic, retain) NSDictionary *dictionary;
+
+@property (nonatomic, retain) NSMutableDictionary *mutableDictionary;
 
 @end
