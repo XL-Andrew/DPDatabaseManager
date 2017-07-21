@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4990C1D71F21D8910061230D /* DPDatabaseUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4990C1D61F21D8910061230D /* DPDatabaseUtils.m */; };
 		49E591311F20521800130A6F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E591301F20521800130A6F /* main.m */; };
 		49E591341F20521800130A6F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E591331F20521800130A6F /* AppDelegate.m */; };
 		49E591371F20521800130A6F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E591361F20521800130A6F /* ViewController.m */; };
@@ -24,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4990C1D51F21D8910061230D /* DPDatabaseUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPDatabaseUtils.h; sourceTree = "<group>"; };
+		4990C1D61F21D8910061230D /* DPDatabaseUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DPDatabaseUtils.m; sourceTree = "<group>"; };
 		49E5912C1F20521800130A6F /* DPDatabaseManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DPDatabaseManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E591301F20521800130A6F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		49E591321F20521800130A6F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -132,6 +135,8 @@
 			children = (
 				49E591581F2052D800130A6F /* DPDatabaseManager.h */,
 				49E591591F2052D800130A6F /* DPDatabaseManager.m */,
+				4990C1D51F21D8910061230D /* DPDatabaseUtils.h */,
+				4990C1D61F21D8910061230D /* DPDatabaseUtils.m */,
 			);
 			path = DPDatabaseManager;
 			sourceTree = "<group>";
@@ -220,6 +225,7 @@
 				49E591341F20521800130A6F /* AppDelegate.m in Sources */,
 				49E591551F2052BF00130A6F /* FMDatabaseQueue.m in Sources */,
 				49E591311F20521800130A6F /* main.m in Sources */,
+				4990C1D71F21D8910061230D /* DPDatabaseUtils.m in Sources */,
 				49E591521F2052BF00130A6F /* FMDatabase.m in Sources */,
 				49E591561F2052BF00130A6F /* FMResultSet.m in Sources */,
 				49E591531F2052BF00130A6F /* FMDatabaseAdditions.m in Sources */,
@@ -381,6 +387,7 @@
 				49E591451F20521800130A6F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

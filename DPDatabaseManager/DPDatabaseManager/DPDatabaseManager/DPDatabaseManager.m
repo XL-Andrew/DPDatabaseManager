@@ -6,8 +6,10 @@
 //
 
 #import "DPDatabaseManager.h"
+#import "DPDatabaseUtils.h"
 #import "FMDB.h"
 #import <objc/runtime.h>
+#import <UIKit/UIKit.h>
 
 typedef enum : NSUInteger {
     SQLStringTypeCreate,            //创建
@@ -112,7 +114,7 @@ static DPDatabaseManager *_instance;
                     }
                 }];
                 
-                objc = [self getModel:kclass withDataDic:[self dictionaryWithJsonString:jsonString]];
+                objc = [self getModel:kclass withDataDic:[DPDatabaseUtils dictionaryWithJsonString:jsonString]];
                 
             }
         }
@@ -145,7 +147,7 @@ static DPDatabaseManager *_instance;
                 }];
                 
                 id objc = [[[kclass class] alloc]init];
-                objc = [self getModel:kclass withDataDic:[self dictionaryWithJsonString:jsonString]];
+                objc = [self getModel:kclass withDataDic:[DPDatabaseUtils dictionaryWithJsonString:jsonString]];
                 [result addObject:objc];
             }
         }
@@ -178,7 +180,7 @@ static DPDatabaseManager *_instance;
                 }];
                 
                 id objc = [[[kclass class] alloc]init];
-                objc = [self getModel:kclass withDataDic:[self dictionaryWithJsonString:jsonString]];
+                objc = [self getModel:kclass withDataDic:[DPDatabaseUtils dictionaryWithJsonString:jsonString]];
                 [result addObject:objc];
             }
         }
@@ -217,7 +219,10 @@ static DPDatabaseManager *_instance;
             
             unsigned int numIvars;      //成员变量个数
             NSString *kvarsKey = @"";   //获取成员变量的名字
+            NSString *kvarsType = @"";  //成员变量类型
+            
             NSMutableArray *kvarsKeyArr = [NSMutableArray array];  //成员变量名字数组
+            NSMutableArray *kvarsTypeArr = [NSMutableArray array]; //成员变量类型数组
             
             Ivar *vars = class_copyIvarList([model class], &numIvars);
             
@@ -229,17 +234,29 @@ static DPDatabaseManager *_instance;
                 if ([kvarsKey hasPrefix:@"_"]) {
                     kvarsKey = [kvarsKey stringByReplacingOccurrencesOfString:@"_" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, 1)];
                 }
+                kvarsType = [NSString stringWithUTF8String:ivar_getTypeEncoding(thisIvar)];
+                
                 [kvarsKeyArr addObject:kvarsKey];
+                [kvarsTypeArr addObject:kvarsType];
             }
             
             //拼接字典 key - 变量名称 value - 变量值
             [kvarsKeyArr enumerateObjectsUsingBlock:^(NSString *memberKey, NSUInteger idx, BOOL * _Nonnull stop) {
                 id memberValue = [model valueForKey:memberKey]?:@"";
+                if ([[kvarsTypeArr objectAtIndex:idx] isEqualToString:@"@"]) { //对id类型数据进行特殊处理
+                    memberValue = [DPDatabaseUtils setIDVariableToString:[model valueForKey:memberKey]];
+                } else if ([[kvarsTypeArr objectAtIndex:idx] containsString:@"NSArray"] ||
+                           [[kvarsTypeArr objectAtIndex:idx] containsString:@"NSMutableArray"] ||
+                           [[kvarsTypeArr objectAtIndex:idx] containsString:@"NSDictionary"] ||
+                           [[kvarsTypeArr objectAtIndex:idx] containsString:@"NSMutableDictionary"]) {
+                    
+                    memberValue = [[NSJSONSerialization dataWithJSONObject:[model valueForKey:memberKey] options:NSJSONWritingPrettyPrinted error:nil] base64EncodedStringWithOptions:0];
+                }
                 [jsonDic setObject:memberValue forKey:memberKey];
             }];
             
             //字典转json
-            jsonString = [self dictionaryToJson:jsonDic];
+            jsonString = [DPDatabaseUtils dictionaryToJson:jsonDic];
             
             statementString = [NSString stringWithFormat:@"INSERT INTO %@ (JSON) VALUES ('%@')",_dbTableName,jsonString];
             
@@ -289,49 +306,60 @@ static DPDatabaseManager *_instance;
         }
         kvarsType = [NSString stringWithUTF8String:ivar_getTypeEncoding(ivar)];
         
-        NSString *tempValue = [kDic objectForKey:kvarsKey];
+        NSString *ivarValueString = [NSString stringWithFormat:@"%@",[kDic objectForKey:kvarsKey]];
         
-        if (!tempValue) { continue; }
+        if (!ivarValueString) { continue; }
         
-        NSString *kDicValue = [NSString stringWithFormat:@"%@",tempValue];
+        //实例变量值
+        id ivarValue = ivarValueString;
         
         /*  类型码判断
             根据当前Model的成员变量类型,来给变量赋值.
          */
         
+        
         //c - char
-        if ([kvarsType isEqualToString:@"c"]) {}
+        if ([kvarsType isEqualToString:@"c"])
+            ivarValue = [NSNumber numberWithChar:[ivarValueString intValue]];
         //i - int
-        else if ([kvarsType isEqualToString:@"i"]) {}
+        else if ([kvarsType isEqualToString:@"i"])
+            ivarValue = [NSNumber numberWithInt:[ivarValueString intValue]];
         //s - short
-        else if ([kvarsType isEqualToString:@"s"]) {}
+        else if ([kvarsType isEqualToString:@"s"])
+            ivarValue = [NSNumber numberWithShort:[ivarValueString intValue]];
         //l - long
-        else if ([kvarsType isEqualToString:@"l"]) {}
+        else if ([kvarsType isEqualToString:@"l"])
+            ivarValue = [NSNumber numberWithLong:[ivarValueString intValue]];
         //q - long long
-        else if ([kvarsType isEqualToString:@"q"]) {}
+        else if ([kvarsType isEqualToString:@"q"])
+            ivarValue = [NSNumber numberWithLongLong:[ivarValueString intValue]];
         //C - unsigned char
-        else if ([kvarsType isEqualToString:@"C"]) {}
+        else if ([kvarsType isEqualToString:@"C"])
+            ivarValue = [NSNumber numberWithUnsignedChar:[ivarValueString intValue]];
         //I - unsigned int
-        else if ([kvarsType isEqualToString:@"I"]) {}
+        else if ([kvarsType isEqualToString:@"I"])
+            ivarValue = [NSNumber numberWithUnsignedInt:[ivarValueString intValue]];
         //S - unsigned short
-        else if ([kvarsType isEqualToString:@"S"]) {}
+        else if ([kvarsType isEqualToString:@"S"])
+            ivarValue = [NSNumber numberWithUnsignedShort:[ivarValueString intValue]];
         //L - unsigned long
-        else if ([kvarsType isEqualToString:@"L"]) {}
+        else if ([kvarsType isEqualToString:@"L"])
+            ivarValue = [NSNumber numberWithUnsignedLong:[ivarValueString intValue]];
         //Q - unsigned long long
-        else if ([kvarsType isEqualToString:@"Q"]) {
-            [objc setValue:[NSNumber numberWithUnsignedInteger:[kDicValue integerValue]] forKey:kvarsKey];
-        }
+        else if ([kvarsType isEqualToString:@"Q"])
+            ivarValue = [NSNumber numberWithUnsignedLongLong:[ivarValueString intValue]];
         //f - float
-        else if ([kvarsType isEqualToString:@"f"]) {}
+        else if ([kvarsType isEqualToString:@"f"])
+            ivarValue = [NSNumber numberWithFloat:[ivarValueString floatValue]];
         //d - double
-        else if ([kvarsType isEqualToString:@"d"]) {}
+        else if ([kvarsType isEqualToString:@"d"])
+            ivarValue = [NSNumber numberWithDouble:[ivarValueString doubleValue]];
         //B - bool or a C99 _Bool
         else if ([kvarsType isEqualToString:@"B"]) {
-            
-            if ([kDicValue isEqualToString:@"1"]) {
-                [objc setValue:@YES forKey:kvarsKey];
+            if ([ivarValueString isEqualToString:@"1"]) {
+                ivarValue = [NSNumber numberWithBool:YES];
             } else {
-                [objc setValue:@NO forKey:kvarsKey];
+                ivarValue = [NSNumber numberWithBool:NO];
             }
         }
         //v - void
@@ -339,17 +367,27 @@ static DPDatabaseManager *_instance;
         //* - char *
         else if ([kvarsType isEqualToString:@"*"]) {}
         //@ - id
-        else if ([kvarsType isEqualToString:@"@"]) {}
+        else if ([kvarsType isEqualToString:@"@"]) {
+            ivarValue = [DPDatabaseUtils getIDVariableValueTypesWithString:ivarValueString];
+        }
         //# - Class
         else if ([kvarsType isEqualToString:@"#"]) {}
         //: - SEL
         else if ([kvarsType isEqualToString:@":"]) {}
         //@"NSArray" - array
-        else if ([kvarsType containsString:@"NSArray"]) {}
+        else if ([kvarsType containsString:@"NSArray"] ||
+                 [kvarsType containsString:@"NSMutableArray"] ||
+                 [kvarsType containsString:@"NSDictionary"] ||
+                 [kvarsType containsString:@"NSMutableDictionary"]) {
+            
+            ivarValue = [NSJSONSerialization JSONObjectWithData:[[NSData alloc]initWithBase64EncodedString:[kDic objectForKey:kvarsKey] options:0] options:NSJSONReadingMutableLeaves error:nil];
+        }
         //? - unknown type
         else {
-            [objc setValue:[kDic objectForKey:kvarsKey] forKey:kvarsKey];
+            ivarValue = ivarValueString;
         }
+        
+        [objc setValue:ivarValue forKey:kvarsKey];
     }
     free(ivars);
     return objc;
@@ -361,30 +399,6 @@ static DPDatabaseManager *_instance;
     NSAssert(fileName || ![fileName isEqualToString:@""], @"数据库文件名不可为空!");
     _dbTableName = [@"DBA" stringByAppendingString:fileName];
     _dbFilePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.db",_dbTableName]];
-}
-
-- (NSString *)dictionaryToJson:(NSDictionary *)dic
-{
-    NSError *parseError = nil;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:&parseError];
-    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-}
-
-- (NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString
-{
-    if (jsonString == nil) {
-        return nil;
-    }
-    
-    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    NSError *err;
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&err];
-    
-    if(err) {
-        NSLog(@"json解析失败：%@",err);
-        return nil;
-    }
-    return dic;
 }
 
 - (FMDatabaseQueue *)baseQueue

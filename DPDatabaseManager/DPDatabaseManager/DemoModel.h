@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface DemoModel : NSObject
+@interface DemoModel : NSObject <NSCoding>
 
 @property (nonatomic, copy) NSString *userName;
 
