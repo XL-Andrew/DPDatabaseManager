@@ -1131,7 +1131,7 @@ typedef NS_ENUM(int, SqliteValueType) {
  
  @see makeFunctionNamed:arguments:block:
  */
-- (void)resultInt:(int) value context:(void *)context;
+- (void)resultInt:(int)value context:(void *)context;
 
 /**
  Return long value from custom function.

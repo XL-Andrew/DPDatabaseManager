@@ -120,7 +120,7 @@ NS_ASSUME_NONNULL_BEGIN
  @return Zero-based index for column.
  */
 
-- (int)columnIndexForName:(NSString*)columnName;
+- (int)columnIndexForName:(NSString *)columnName;
 
 /** Column name for column index
 
@@ -138,7 +138,7 @@ NS_ASSUME_NONNULL_BEGIN
  @return `int` value of the result set's column.
  */
 
-- (int)intForColumn:(NSString*)columnName;
+- (int)intForColumn:(NSString *)columnName;
 
 /** Result set integer value for column.
 
@@ -174,7 +174,7 @@ NS_ASSUME_NONNULL_BEGIN
  @return `long long int` value of the result set's column.
  */
 
-- (long long int)longLongIntForColumn:(NSString*)columnName;
+- (long long int)longLongIntForColumn:(NSString *)columnName;
 
 /** Result set `long long int` value for column.
 
@@ -192,7 +192,7 @@ NS_ASSUME_NONNULL_BEGIN
  @return `unsigned long long int` value of the result set's column.
  */
 
-- (unsigned long long int)unsignedLongLongIntForColumn:(NSString*)columnName;
+- (unsigned long long int)unsignedLongLongIntForColumn:(NSString *)columnName;
 
 /** Result set `unsigned long long int` value for column.
 
@@ -210,7 +210,7 @@ NS_ASSUME_NONNULL_BEGIN
  @return `BOOL` value of the result set's column.
  */
 
-- (BOOL)boolForColumn:(NSString*)columnName;
+- (BOOL)boolForColumn:(NSString *)columnName;
 
 /** Result set `BOOL` value for column.
 
@@ -229,7 +229,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  */
 
-- (double)doubleForColumn:(NSString*)columnName;
+- (double)doubleForColumn:(NSString *)columnName;
 
 /** Result set `double` value for column.
 
@@ -249,7 +249,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  */
 
-- (NSString * _Nullable)stringForColumn:(NSString*)columnName;
+- (NSString * _Nullable)stringForColumn:(NSString *)columnName;
 
 /** Result set `NSString` value for column.
 
@@ -267,7 +267,7 @@ NS_ASSUME_NONNULL_BEGIN
  @return Date value of the result set's column.
  */
 
-- (NSDate * _Nullable)dateForColumn:(NSString*)columnName;
+- (NSDate * _Nullable)dateForColumn:(NSString *)columnName;
 
 /** Result set `NSDate` value for column.
 
@@ -289,7 +289,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  */
 
-- (NSData * _Nullable)dataForColumn:(NSString*)columnName;
+- (NSData * _Nullable)dataForColumn:(NSString *)columnName;
 
 /** Result set `NSData` value for column.
 
@@ -307,9 +307,9 @@ NS_ASSUME_NONNULL_BEGIN
  @return `(const unsigned char *)` value of the result set's column.
  */
 
-- (const unsigned char * _Nullable)UTF8StringForColumn:(NSString*)columnName;
+- (const unsigned char * _Nullable)UTF8StringForColumn:(NSString *)columnName;
 
-- (const unsigned char * _Nullable)UTF8StringForColumnName:(NSString*)columnName __deprecated_msg("Use UTF8StringForColumn instead");
+- (const unsigned char * _Nullable)UTF8StringForColumnName:(NSString *)columnName __deprecated_msg("Use UTF8StringForColumn instead");
 
 /** Result set `(const unsigned char *)` value for column.
 

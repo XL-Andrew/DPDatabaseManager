@@ -127,7 +127,7 @@
 
 #pragma clang diagnostic pop
 
-- (NSDictionary*)resultDictionary {
+- (NSDictionary *)resultDictionary {
     
     NSUInteger num_cols = (NSUInteger)sqlite3_data_count([_statement statement]);
     
@@ -216,7 +216,7 @@
     return sqlite3_errcode([_parentDB sqliteHandle]) == SQLITE_ROW;
 }
 
-- (int)columnIndexForName:(NSString*)columnName {
+- (int)columnIndexForName:(NSString *)columnName {
     columnName = [columnName lowercaseString];
     
     NSNumber *n = [[self columnNameToIndexMap] objectForKey:columnName];
@@ -262,7 +262,7 @@
     return (unsigned long long int)[self longLongIntForColumnIndex:columnIdx];
 }
 
-- (BOOL)boolForColumn:(NSString*)columnName {
+- (BOOL)boolForColumn:(NSString *)columnName {
     return [self boolForColumnIndex:[self columnIndexForName:columnName]];
 }
 
@@ -270,7 +270,7 @@
     return ([self intForColumnIndex:columnIdx] != 0);
 }
 
-- (double)doubleForColumn:(NSString*)columnName {
+- (double)doubleForColumn:(NSString *)columnName {
     return [self doubleForColumnIndex:[self columnIndexForName:columnName]];
 }
 
@@ -294,15 +294,15 @@
     return [NSString stringWithUTF8String:c];
 }
 
-- (NSString*)stringForColumn:(NSString*)columnName {
+- (NSString *)stringForColumn:(NSString*)columnName {
     return [self stringForColumnIndex:[self columnIndexForName:columnName]];
 }
 
-- (NSDate*)dateForColumn:(NSString*)columnName {
+- (NSDate *)dateForColumn:(NSString*)columnName {
     return [self dateForColumnIndex:[self columnIndexForName:columnName]];
 }
 
-- (NSDate*)dateForColumnIndex:(int)columnIdx {
+- (NSDate *)dateForColumnIndex:(int)columnIdx {
     
     if (sqlite3_column_type([_statement statement], columnIdx) == SQLITE_NULL || (columnIdx < 0) || columnIdx >= sqlite3_column_count([_statement statement])) {
         return nil;
@@ -312,11 +312,11 @@
 }
 
 
-- (NSData*)dataForColumn:(NSString*)columnName {
+- (NSData *)dataForColumn:(NSString*)columnName {
     return [self dataForColumnIndex:[self columnIndexForName:columnName]];
 }
 
-- (NSData*)dataForColumnIndex:(int)columnIdx {
+- (NSData *)dataForColumnIndex:(int)columnIdx {
     
     if (sqlite3_column_type([_statement statement], columnIdx) == SQLITE_NULL || (columnIdx < 0) || columnIdx >= sqlite3_column_count([_statement statement])) {
         return nil;
@@ -333,11 +333,11 @@
 }
 
 
-- (NSData*)dataNoCopyForColumn:(NSString*)columnName {
+- (NSData *)dataNoCopyForColumn:(NSString*)columnName {
     return [self dataNoCopyForColumnIndex:[self columnIndexForName:columnName]];
 }
 
-- (NSData*)dataNoCopyForColumnIndex:(int)columnIdx {
+- (NSData *)dataNoCopyForColumnIndex:(int)columnIdx {
     
     if (sqlite3_column_type([_statement statement], columnIdx) == SQLITE_NULL || (columnIdx < 0) || columnIdx >= sqlite3_column_count([_statement statement])) {
         return nil;
@@ -356,7 +356,7 @@
     return sqlite3_column_type([_statement statement], columnIdx) == SQLITE_NULL;
 }
 
-- (BOOL)columnIsNull:(NSString*)columnName {
+- (BOOL)columnIsNull:(NSString *)columnName {
     return [self columnIndexIsNull:[self columnIndexForName:columnName]];
 }
 
@@ -416,7 +416,7 @@
 }
 
 // returns autoreleased NSString containing the name of the column in the result set
-- (NSString*)columnNameForIndex:(int)columnIdx {
+- (NSString *)columnNameForIndex:(int)columnIdx {
     return [NSString stringWithUTF8String: sqlite3_column_name([_statement statement], columnIdx)];
 }
 
