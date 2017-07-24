@@ -10,30 +10,10 @@
 
 @interface DemoModel : NSObject
 
-@property (nonatomic, copy) NSString *string;
+@property (nonatomic, copy) NSString *userName;
 
-@property (nonatomic, assign) NSInteger integer;
+@property (nonatomic, assign) NSUInteger userAge;
 
-@property (nonatomic, assign) NSUInteger uinteger;
-
-@property (nonatomic, assign) BOOL kBool;
-
-@property (nonatomic, assign) char kchar;
-
-@property (nonatomic, assign) float kfloat;
-
-@property (nonatomic, assign) double kdouble;
-
-@property (nonatomic, assign) int kint;
-
-@property (nonatomic, assign) id kid;
-
-@property (nonatomic, retain) NSArray *array;
-
-@property (nonatomic, retain) NSMutableArray *mutableArray;
-
-@property (nonatomic, retain) NSDictionary *dictionary;
-
-@property (nonatomic, retain) NSMutableDictionary *mutableDictionary;
+@property (nonatomic, assign) BOOL isAdult;
 
 @end

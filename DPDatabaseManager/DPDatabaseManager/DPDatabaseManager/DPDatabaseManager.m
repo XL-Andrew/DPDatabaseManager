@@ -363,21 +363,21 @@ static DPDatabaseManager *_instance;
             }
         }
         //v - void
-        else if ([kvarsType isEqualToString:@"v"]) {}
+//        else if ([kvarsType isEqualToString:@"v"]) {}
         //* - char *
-        else if ([kvarsType isEqualToString:@"*"]) {}
+//        else if ([kvarsType isEqualToString:@"*"]) {}
         //@ - id
         else if ([kvarsType isEqualToString:@"@"]) {
             ivarValue = [DPDatabaseUtils getIDVariableValueTypesWithString:ivarValueString];
         }
         //# - Class
-        else if ([kvarsType isEqualToString:@"#"]) {}
+//        else if ([kvarsType isEqualToString:@"#"]) {}
         //: - SEL
-        else if ([kvarsType isEqualToString:@":"]) {}
+//        else if ([kvarsType isEqualToString:@":"]) {}
         //@"NSArray" - array
-        else if ([kvarsType containsString:@"NSArray"] ||
-                 [kvarsType containsString:@"NSMutableArray"] ||
-                 [kvarsType containsString:@"NSDictionary"] ||
+        else if ([kvarsType containsString:@"NSArray"]          ||
+                 [kvarsType containsString:@"NSMutableArray"]   ||
+                 [kvarsType containsString:@"NSDictionary"]     ||
                  [kvarsType containsString:@"NSMutableDictionary"]) {
             
             ivarValue = [NSJSONSerialization JSONObjectWithData:[[NSData alloc]initWithBase64EncodedString:[kDic objectForKey:kvarsKey] options:0] options:NSJSONReadingMutableLeaves error:nil];
